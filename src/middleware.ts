@@ -7,7 +7,7 @@ export const config = {
     // Skip Next.js internals
     "/_next(.*)",
     // Skip all static files
-    "/((?!.*\\.(?:png|jpg|jpeg|gif|svg|ico|woff2|woff|ttf|eot|pdf|txt|map))$).*)",
+    "/((?!.*\\.(?:png|jpg|jpeg|gif|svg|ico|woff2|woff|ttf|eot|pdf|txt|map))$)",
     // Protect "/dashboard" and its sub-routes
     "/dashboard(.*)",
   ],

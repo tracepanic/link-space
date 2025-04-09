@@ -1,3 +1,5 @@
+"use server";
+
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import {
   Breadcrumb,
@@ -13,11 +15,26 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import getUser from "@/lib/server";
+import { SidebarUser } from "@/types";
+import { redirect } from "next/navigation";
 
-export default function Layout() {
+export default async function Layout() {
+  const user = await getUser();
+
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  const formatedUser: SidebarUser = {
+    name: `${user.firstName} ${user.lastName}`,
+    username: user.username ?? "",
+    imageUrl: user.imageUrl,
+  };
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar user={formatedUser} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">
