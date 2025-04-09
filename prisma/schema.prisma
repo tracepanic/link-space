@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum BlockType {
+  LINK
+  TEXT
+  EMBED
+}
+
+model User {
+  id      String @id @default(cuid())
+  clerkId String
+
+  spaces Space[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clerkId])
+  @@map("users")
+}
+
+model Space {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String
+  description String?
+  visibility  Visibility @default(PUBLIC)
+
+  block  Block[]
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  @@unique([userId, slug])
+  @@index([slug])
+  @@index([userId])
+  @@index([visibility])
+  @@map("spaces")
+}
+
+model Block {
+  id      String    @id @default(cuid())
+  type    BlockType
+  order   Int
+  content Json
+
+  spaceId String
+  space   Space  @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([spaceId, order])
+  @@index([type])
+  @@map("blocks")
+}
