@@ -71,3 +71,60 @@ export async function getAllSpaces(): Promise<Space[] | []> {
     return [];
   }
 }
+
+export async function getAllPublicSpaces(): Promise<Space[] | []> {
+  const user = await getUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  try {
+    const res = await db.space.findMany({
+      where: { visibility: "PUBLIC", user: { clerkId: user.id } },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function getAllPrivateSpaces(): Promise<Space[] | []> {
+  const user = await getUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  try {
+    const res = await db.space.findMany({
+      where: { visibility: "PRIVATE", user: { clerkId: user.id } },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function getPrivateUserSpace(id: string) {
+  const user = await getUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  try {
+    const res = await db.space.findUnique({
+      where: { id, user: { clerkId: user.id } },
+      include: { block: true },
+    });
+
+    console.log(res);
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

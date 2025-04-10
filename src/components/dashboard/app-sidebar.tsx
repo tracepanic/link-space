@@ -40,11 +40,11 @@ const mainNavs = [
     items: [
       {
         title: "Public",
-        url: "#",
+        url: "/dashboard/spaces/public",
       },
       {
         title: "Private",
-        url: "#",
+        url: "/dashboard/spaces/private",
       },
     ],
   },

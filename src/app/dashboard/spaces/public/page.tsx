@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/ui/loader";
 import { Space } from "@/generated/prisma";
 import { formatDistanceToNow } from "@/lib/client";
-import { getAllSpaces } from "@/lib/server";
-import { Edit, Globe, Lock, Plus, Search } from "lucide-react";
+import { getAllPublicSpaces } from "@/lib/server";
+import { Edit, Globe, Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -26,7 +26,7 @@ export default function Page() {
 
   useEffect(() => {
     (async function getSpaces() {
-      const res = await getAllSpaces();
+      const res = await getAllPublicSpaces();
       setSpaces(res);
       setFilteredSpaces(res);
       setLoading(false);
@@ -50,7 +50,7 @@ export default function Page() {
     <div className="container mx-auto py-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Your Spaces</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Public Spaces</h1>
           <p className="text-muted-foreground mt-1">
             Create, manage and share your link collections
           </p>
@@ -99,17 +99,9 @@ export default function Page() {
             <Card key={space.id} className="overflow-hidden">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg truncate max-w-[50%]">
+                  <CardTitle className="text-lg truncate line-clamp-1">
                     {space.title}
                   </CardTitle>
-                  <div className="flex items-center text-xs text-muted-foreground">
-                    {space.visibility === "PUBLIC" ? (
-                      <Globe className="h-3.5 w-3.5 mr-1" />
-                    ) : (
-                      <Lock className="h-3.5 w-3.5 mr-1" />
-                    )}
-                    {space.visibility}
-                  </div>
                 </div>
                 <CardDescription className="line-clamp-2">
                   {space.description}
