@@ -1,6 +1,6 @@
 "use server";
 
-import { BlockType, Visibility } from "@/generated/prisma";
+import { BlockType, Space, Visibility } from "@/generated/prisma";
 import db from "@/lib/db";
 import { currentUser, User } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -51,5 +51,23 @@ export async function createSpaceWithBlocks(
   } catch (error) {
     console.error(error);
     return { success: false };
+  }
+}
+
+export async function getAllSpaces(): Promise<Space[] | []> {
+  const user = await getUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  try {
+    const res = await db.space.findMany({
+      where: { user: { clerkId: user.id } },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 }

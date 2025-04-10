@@ -42,3 +42,37 @@ export function generateEmbedCode(url: string): string | null {
 export function generateId(prefix: string): string {
   return `${prefix}-${Math.random().toString(36).substring(2, 9)}`;
 }
+
+export function formatDistanceToNow(date: Date): string {
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  const minute = 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  const week = day * 7;
+  const month = day * 30;
+  const year = day * 365;
+
+  if (diffInSeconds < minute) {
+    return `${diffInSeconds} seconds ago`;
+  } else if (diffInSeconds < hour) {
+    const mins = Math.floor(diffInSeconds / minute);
+    return `${mins} ${mins === 1 ? "minute" : "minutes"} ago`;
+  } else if (diffInSeconds < day) {
+    const hrs = Math.floor(diffInSeconds / hour);
+    return `${hrs} ${hrs === 1 ? "hour" : "hours"} ago`;
+  } else if (diffInSeconds < week) {
+    const days = Math.floor(diffInSeconds / day);
+    return `${days} ${days === 1 ? "day" : "days"} ago`;
+  } else if (diffInSeconds < month) {
+    const weeks = Math.floor(diffInSeconds / week);
+    return `${weeks} ${weeks === 1 ? "week" : "weeks"} ago`;
+  } else if (diffInSeconds < year) {
+    const months = Math.floor(diffInSeconds / month);
+    return `${months} ${months === 1 ? "month" : "months"} ago`;
+  } else {
+    const years = Math.floor(diffInSeconds / year);
+    return `${years} ${years === 1 ? "year" : "years"} ago`;
+  }
+}
