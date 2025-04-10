@@ -21,7 +21,7 @@ enum BlockType {
 
 model User {
   id      String @id @default(cuid())
-  clerkId String
+  clerkId String @unique
 
   spaces Space[]
 

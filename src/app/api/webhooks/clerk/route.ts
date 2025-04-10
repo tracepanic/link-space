@@ -44,7 +44,6 @@ export async function POST(req: Request) {
         },
       });
 
-      console.log(`User created in database with Clerk ID: ${id}`);
       return NextResponse.json({ message: "User created successfully" });
     } catch (error) {
       console.error("Error creating user in database:", error);

@@ -1,18 +1,5 @@
 "use client";
 
-import * as React from "react";
-import {
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  LifeBuoy,
-  Map,
-  PieChart,
-  Send,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
 import { NavMain } from "@/components/dashboard/nav-main";
 import { NavProjects } from "@/components/dashboard/nav-projects";
 import { NavSecondary } from "@/components/dashboard/nav-secondary";
@@ -27,90 +14,61 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { SidebarUser } from "@/types";
+import {
+  File,
+  FilePlus,
+  Frame,
+  LifeBuoy,
+  Link2,
+  Map,
+  PieChart,
+  Send,
+} from "lucide-react";
+import Link from "next/link";
+
+const mainNavs = [
+  {
+    title: "New Space",
+    url: "/dashboard/new",
+    icon: FilePlus,
+  },
+  {
+    title: "Your Spaces",
+    url: "/dashboard/spaces",
+    icon: File,
+    isActive: true,
+    items: [
+      {
+        title: "Public",
+        url: "#",
+      },
+      {
+        title: "Private",
+        url: "#",
+      },
+    ],
+  },
+];
 
 const data = {
   navMain: [
     {
-      title: "Playground",
+      title: "New Space",
       url: "#",
-      icon: SquareTerminal,
+      icon: FilePlus,
+    },
+    {
+      title: "Your Spaces",
+      url: "#",
+      icon: File,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Public",
           url: "#",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Private",
           url: "#",
         },
       ],
@@ -154,21 +112,21 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <Link href="/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
+                  <Link2 className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-semibold">Link Space</span>
+                  <span className="truncate text-xs">User Dashboard</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={mainNavs} />
         <NavProjects projects={data.projects} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>

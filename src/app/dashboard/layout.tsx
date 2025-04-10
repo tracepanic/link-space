@@ -15,13 +15,16 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import getUser from "@/lib/server";
+import { getUser } from "@/lib/server";
 import { SidebarUser } from "@/types";
 import { redirect } from "next/navigation";
 
-export default async function Layout() {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const user = await getUser();
-
   if (!user) {
     redirect("/sign-in");
   }
@@ -55,14 +58,7 @@ export default async function Layout() {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div>
+        <div className="w-full h-full p-4 pt-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
