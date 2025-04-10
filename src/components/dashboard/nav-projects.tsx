@@ -4,9 +4,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Loader } from "@/components/ui/loader";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -16,74 +16,87 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  Folder,
-  MoreHorizontal,
-  Share,
-  Trash2,
-  type LucideIcon,
-} from "lucide-react";
+import { getPinnedSpaces } from "@/lib/server";
+import { usePinStore } from "@/lib/store";
+import { Edit, Eye, MoreHorizontal, Pin } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export function NavProjects({
-  projects,
-}: {
-  projects: {
-    name: string;
-    url: string;
-    icon: LucideIcon;
-  }[];
-}) {
+export function NavProjects() {
+  const [loading, setLoading] = useState(true);
+
+  const { pins, setAllPins } = usePinStore();
   const { isMobile } = useSidebar();
+  const { setOpenMobile } = useSidebar();
+
+  useEffect(() => {
+    (async function getSpaces() {
+      const res = await getPinnedSpaces();
+      const simplifiedPins = res.map((item) => ({
+        id: item.space.id,
+        title: item.space.title,
+      }));
+      setAllPins(simplifiedPins);
+      setLoading(false);
+    })();
+  }, []);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Pinned Spaces</SidebarGroupLabel>
-      <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <Link href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </Link>
-            </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem>
-                  <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Share className="text-muted-foreground" />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <MoreHorizontal />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
+      {loading ? (
+        <Loader size={20} className="mt-2" />
+      ) : (
+        <SidebarMenu>
+          {pins.map((pin) => (
+            <SidebarMenuItem key={pin.id}>
+              <SidebarMenuButton asChild>
+                <Link
+                  href={`/dashboard/spaces/view/${pin.id}`}
+                  onClick={() => setOpenMobile(false)}
+                >
+                  <Pin />
+                  <span>{pin.title}</span>
+                </Link>
+              </SidebarMenuButton>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuAction showOnHover>
+                    <MoreHorizontal />
+                    <span className="sr-only">More</span>
+                  </SidebarMenuAction>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-48"
+                  side={isMobile ? "bottom" : "right"}
+                  align={isMobile ? "end" : "start"}
+                >
+                  <DropdownMenuItem>
+                    <Link
+                      className="flex items-center gap-3"
+                      href={`/dashboard/spaces/view/${pin.id}`}
+                      onClick={() => setOpenMobile(false)}
+                    >
+                      <Eye className="text-muted-foreground" />
+                      <span>View Space</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link
+                      className="flex items-center gap-3"
+                      href={`/dashboard/spaces/edit/${pin.id}`}
+                      onClick={() => setOpenMobile(false)}
+                    >
+                      <Edit className="text-muted-foreground" />
+                      <span>Edit Space</span>
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      )}
     </SidebarGroup>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { BlockRenderer } from "@/components/blocks/block-renderer";
 import { AddBlockMenu } from "@/components/editor/add-block-menu";
 import { BlockEditor } from "@/components/editor/block-editor";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Loader } from "@/components/ui/loader";
 import {
   Select,
   SelectContent,
@@ -25,11 +27,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { BlockType } from "@/generated/prisma";
 import { generateId, slugify } from "@/lib/client";
-import { createSpaceWithBlocks } from "@/lib/server";
+import { getPrivateUserSpace, updateSpaceWithBlocks } from "@/lib/server";
+import { usePinStore } from "@/lib/store";
+import { SpaceWithBlocks } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FilePlus } from "lucide-react";
+import { Eye, FilePlus, Lock } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -57,10 +62,13 @@ const schema = z.object({
   isInHeader: z.boolean(),
 });
 
-export default function Page() {
+export default function Render({ id }: { id: string }) {
+  const [loading, setLoading] = useState(true);
+  const [space, setSpace] = useState<SpaceWithBlocks | null>(null);
   const [blocks, setBlocks] = useState<any[]>([]);
 
   const router = useRouter();
+  const { checkPinExists, updatePinTitle } = usePinStore();
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -73,6 +81,31 @@ export default function Page() {
       isInHeader: false,
     },
   });
+
+  useEffect(() => {
+    (async function getSpace() {
+      setLoading(true);
+      const res = await getPrivateUserSpace(id);
+
+      if (res) {
+        setSpace(res);
+        setBlocks(res.block ?? []);
+
+        form.reset({
+          title: res.title,
+          slug: res.slug,
+          description: res.description ?? "",
+          visibility: res.visibility,
+          isHome: res.isHome ?? false,
+          isInHeader: res.isInHeader ?? false,
+        });
+      } else {
+        setSpace(null);
+      }
+
+      setLoading(false);
+    })();
+  }, [id, form]);
 
   const handleAddBlock = (type: BlockType) => {
     const newBlock = {
@@ -96,9 +129,9 @@ export default function Page() {
   };
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    const id = toast.loading("Creating space...");
+    const id = toast.loading("Updating space...");
 
-    const res = await createSpaceWithBlocks({
+    const res = await updateSpaceWithBlocks(space?.id || "", {
       title: values.title,
       slug: values.slug,
       description: values.description,
@@ -111,20 +144,43 @@ export default function Page() {
     toast.dismiss(id);
 
     if (res && res.success) {
-      toast.success("Space created successfully");
-      form.reset();
-      setBlocks([]);
+      if (checkPinExists(space?.id || "")) {
+        updatePinTitle(space?.id || "", values.title);
+      }
+      toast.success("Space updated successfully");
       router.push("/dashboard/spaces");
     } else {
-      toast.error("Failed to create space");
-      form.reset();
-      setBlocks([]);
+      toast.error("Failed to update space");
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (!space) {
+    return (
+      <Card>
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-destructive mb-4">
+            Space Not Found
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            The space you are looking for does not exist or has been removed.
+          </p>
+          <Link href="/dashboard/spaces">
+            <Button variant="outline" className="mt-4">
+              Go Back to Spaces
+            </Button>
+          </Link>
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold mb-6">Create New Space</h1>
+      <h1 className="text-3xl font-bold mb-6">Update Space</h1>
 
       <Form {...form}>
         <form className="space-y-10" onSubmit={form.handleSubmit(onSubmit)}>
@@ -164,9 +220,7 @@ export default function Page() {
                         />
                       </div>
                     </FormControl>
-                    <FormDescription>
-                      This determines your space's URL
-                    </FormDescription>
+                    <FormDescription>Update your space's URL</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -297,7 +351,7 @@ export default function Page() {
               Cancel
             </Button>
             <Button type="submit" disabled={form.formState.isSubmitting}>
-              Create Space
+              Update Space
             </Button>
           </div>
         </form>

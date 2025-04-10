@@ -1,4 +1,4 @@
-import { Block, BlockType, Space } from "@/generated/prisma";
+import { Block, BlockType, Space, Visibility } from "@/generated/prisma";
 
 export type SidebarUser = {
   name: string;
@@ -31,4 +31,21 @@ export type ActualBlock = {
 
 export type SpaceWithBlocks = Space & {
   block: Block[];
+};
+
+export type PinnedSpace = {
+  space: {
+    id: string;
+    title: string;
+  };
+};
+
+export type CreateSpaceWithBlocks = {
+  title: string;
+  slug: string;
+  description?: string;
+  visibility: Visibility;
+  isHome?: boolean;
+  isInHeader?: boolean;
+  blocks: { id: string; type: BlockType; order: number; content: any }[];
 };

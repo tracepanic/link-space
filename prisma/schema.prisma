@@ -24,6 +24,7 @@ model User {
   clerkId String @unique
 
   spaces Space[]
+  pinned PinnedSpace[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,15 +39,16 @@ model Space {
   slug        String
   description String?
   visibility  Visibility @default(PUBLIC)
+  isHome      Boolean?
+  isInHeader  Boolean?
 
   block  Block[]
+  pinned PinnedSpace[]
   userId String
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  isDeleted Boolean   @default(false)
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, slug])
   @@index([slug])
@@ -60,6 +62,7 @@ model Block {
   type    BlockType
   order   Int
   content Json
+  version Int       @default(0)
 
   spaceId String
   space   Space  @relation(fields: [spaceId], references: [id], onDelete: Cascade)
@@ -67,7 +70,23 @@ model Block {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([spaceId, type, order])
   @@index([spaceId, order])
   @@index([type])
   @@map("blocks")
+}
+
+model PinnedSpace {
+  id      String @id @default(cuid())
+  userId  String
+  spaceId String
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  space Space @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, spaceId])
+  @@map("pinned_spaces")
 }

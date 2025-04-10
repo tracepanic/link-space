@@ -58,7 +58,7 @@ export default async function Layout({
             </Breadcrumb>
           </div>
         </header>
-        <div className="w-full h-full p-4 pt-0">{children}</div>
+        <div className="w-full h-full p-4 pt-0 mb-36">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -12,12 +12,14 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { SidebarUser } from "@/types";
 import {
   File,
   FilePlus,
   Frame,
+  House,
   LifeBuoy,
   Link2,
   Map,
@@ -27,6 +29,11 @@ import {
 import Link from "next/link";
 
 const mainNavs = [
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: House,
+  },
   {
     title: "New Space",
     url: "/dashboard/new",
@@ -51,29 +58,6 @@ const mainNavs = [
 ];
 
 const data = {
-  navMain: [
-    {
-      title: "New Space",
-      url: "#",
-      icon: FilePlus,
-    },
-    {
-      title: "Your Spaces",
-      url: "#",
-      icon: File,
-      isActive: true,
-      items: [
-        {
-          title: "Public",
-          url: "#",
-        },
-        {
-          title: "Private",
-          url: "#",
-        },
-      ],
-    },
-  ],
   navSecondary: [
     {
       title: "Support",
@@ -106,13 +90,15 @@ const data = {
 };
 
 export function AppSidebar({ user }: { user: SidebarUser }) {
+  const { setOpenMobile } = useSidebar();
+
   return (
     <Sidebar variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard">
+              <Link href="/dashboard" onClick={() => setOpenMobile(false)}>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Link2 className="size-4" />
                 </div>
@@ -127,7 +113,7 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={mainNavs} />
-        <NavProjects projects={data.projects} />
+        <NavProjects />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

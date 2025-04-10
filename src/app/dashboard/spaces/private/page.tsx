@@ -13,16 +13,21 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/ui/loader";
 import { Space } from "@/generated/prisma";
 import { formatDistanceToNow } from "@/lib/client";
-import { getAllPrivateSpaces } from "@/lib/server";
-import { Edit, Globe, Plus, Search } from "lucide-react";
+import { deleteSpace, getAllPrivateSpaces } from "@/lib/server";
+import { usePinStore } from "@/lib/store";
+import { Edit, Globe, Plus, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [spaces, setSpaces] = useState<Space[] | []>([]);
   const [filteredSpaces, setFilteredSpaces] = useState<Space[] | []>([]);
+
+  const { removePinById, checkPinExists } = usePinStore();
 
   useEffect(() => {
     (async function getSpaces() {
@@ -41,6 +46,30 @@ export default function Page() {
     );
     setFilteredSpaces(results);
   }, [searchQuery, spaces]);
+
+  const handleDeleteSpace = async (id: string) => {
+    const toastId = toast.loading("Deleting space...");
+    setIsDeleting(true);
+
+    const res = await deleteSpace(id);
+
+    toast.dismiss(toastId);
+    setIsDeleting(false);
+
+    if (res && res.success) {
+      setSpaces((prevSpaces) => prevSpaces.filter((space) => space.id !== id));
+      setFilteredSpaces((prevFilteredSpaces) =>
+        prevFilteredSpaces.filter((space) => space.id !== id),
+      );
+
+      if (checkPinExists(id)) {
+        removePinById(id);
+      }
+      toast.success("Space deleted successfully");
+    } else {
+      toast.error("Failed to delete space");
+    }
+  };
 
   if (loading) {
     return <Loader />;
@@ -130,6 +159,15 @@ export default function Page() {
                     Edit
                   </Button>
                 </Link>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-destructive hover:text-destructive"
+                  onClick={() => handleDeleteSpace(space.id)}
+                  disabled={isDeleting}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </CardFooter>
             </Card>
           ))}
