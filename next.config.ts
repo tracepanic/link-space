@@ -1,13 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ["@prisma/client"],
-  },
-  webpack: (config) => {
-    config.externalsPresets = { node: true };
-    return config;
-  },
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
