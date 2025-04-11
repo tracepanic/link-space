@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { Link2, Menu, Moon, Sun, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,10 +8,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Link2, Menu, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export function Header() {
+export function Header({ id }: { id: string | undefined }) {
   const [mounted, setMounted] = useState(false);
 
   const { theme, setTheme } = useTheme();
@@ -21,8 +21,6 @@ export function Header() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  if (!mounted) return null;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
@@ -39,33 +37,37 @@ export function Header() {
             >
               Dashboard
             </Link>
-            <Link
-              href={`/u/`}
-              className="text-sm font-medium transition-colors hover:text-purple-600"
-            >
-              Profile
-            </Link>
+            {id && (
+              <Link
+                href={`/u/${id}`}
+                className="text-sm font-medium transition-colors hover:text-purple-600"
+              >
+                Profile
+              </Link>
+            )}
           </nav>
         </div>
         <div className="flex items-center space-x-1 md:space-x-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            {theme === "dark" ? (
-              <Sun className="h-5 w-5" />
-            ) : (
-              <Moon className="h-5 w-5" />
-            )}
-            <span className="sr-only">Toggle theme</span>
-          </Button>
-          <Link href={`/u/`}>
+          {mounted && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+          )}
+          {/* <Link href={`/u/`}>
             <Button variant="ghost" size="icon" className="hidden md:flex">
               <User className="h-5 w-5" />
-              <span className="sr-only">My Profile</span>
+              <span className="sr-only">Profile</span>
             </Button>
-          </Link>
+          </Link> */}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -85,9 +87,14 @@ export function Header() {
                 >
                   Dashboard
                 </Link>
-                <Link href={`/u/`} className="flex items-center font-medium">
-                  Profile
-                </Link>
+                {id && (
+                  <Link
+                    href={`/u/${id}`}
+                    className="flex items-center font-medium"
+                  >
+                    Profile
+                  </Link>
+                )}
               </div>
             </SheetContent>
           </Sheet>

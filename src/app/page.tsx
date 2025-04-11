@@ -2,6 +2,7 @@ import { Header } from "@/components/header";
 import { HowItWorks } from "@/components/home-how-it-works";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getUserId } from "@/lib/server";
 import {
   ArrowRight,
   ChevronRight,
@@ -15,10 +16,12 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Page() {
+export default async function Page() {
+  const id = await getUserId();
+
   return (
     <div className="w-full">
-      <Header />
+      <Header id={id} />
 
       <div className="flex flex-col min-h-screen">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-950 overflow-hidden relative">
@@ -62,11 +65,12 @@ export default function Page() {
               <div className="p-3 md:p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
                 <div className="aspect-[16/9] w-full rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden relative">
                   <Image
-                    src="/placeholder.svg"
+                    src="/hero.png"
                     width={1200}
                     height={800}
                     alt="LinkSpace Dashboard Preview"
                     className="object-cover w-full h-full"
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end">
                     <div className="p-4 md:p-6 text-white">
@@ -327,17 +331,46 @@ export default function Page() {
                 <div className="absolute -right-8 -bottom-8 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl"></div>
                 <div className="relative p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
                   <Image
-                    src="/placeholder.svg"
+                    src="/other.png"
                     width={500}
                     height={300}
                     alt="LinkSpace in action"
                     className="w-full h-auto rounded-lg"
+                    priority
                   />
                 </div>
               </div>
             </div>
           </div>
         </section>
+
+        <footer className="mt-72 mb-24">
+          <div className="pt-8 container mx-auto border-t mt-3 flex flex-col md:flex-row items-center justify-between">
+            <p className="text-gray-500 dark:text-gray-400 mb-4 md:mb-0">
+              &copy; {new Date().getFullYear()} LinkSpace. All rights reserved.
+            </p>
+            <div className="flex space-x-6">
+              <Link
+                href="#"
+                className="text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400"
+              >
+                Terms
+              </Link>
+              <Link
+                href="#"
+                className="text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400"
+              >
+                Privacy
+              </Link>
+              <Link
+                href="#"
+                className="text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400"
+              >
+                Cookies
+              </Link>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );

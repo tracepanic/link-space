@@ -1,18 +1,35 @@
 "use client";
 
 import { BlockRenderer } from "@/components/blocks/block-renderer";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Loader } from "@/components/ui/loader";
 import { getPrivateUserSpace, pinSpace, unpinSpace } from "@/lib/server";
 import { usePinStore } from "@/lib/store";
 import { SpaceWithBlocks } from "@/types";
-import { Eye, Lock, Pin, PinOff } from "lucide-react";
+import { Eye, Lock, Pin, PinOff, Share2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export default function Render({ id }: { id: string }) {
+export default function Render({
+  id,
+  userId,
+}: {
+  id: string;
+  userId: string | undefined;
+}) {
   const [loading, setLoading] = useState(true);
   const [space, setSpace] = useState<SpaceWithBlocks | null>(null);
   const [isUpdatingPin, setIsUpdatingPin] = useState(false);
@@ -62,6 +79,19 @@ export default function Render({ id }: { id: string }) {
     }
   };
 
+  const handleCopySpace = () => {
+    let url: string;
+
+    if (space?.isHome) {
+      url = `${window.location.origin}/u/${userId}`;
+    } else {
+      url = `${window.location.origin}/u/${userId}/${id}`;
+    }
+
+    navigator.clipboard.writeText(url);
+    toast.success("Link copied to clipboard");
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -98,7 +128,7 @@ export default function Render({ id }: { id: string }) {
           </div>
           <p className="text-muted-foreground mt-1">{space.description}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mt-4 md:mt-0">
           <Button
             size="icon"
             variant="outline"
@@ -107,10 +137,30 @@ export default function Render({ id }: { id: string }) {
           >
             {checkPinExists(space.id) ? <PinOff /> : <Pin />}
           </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button size="icon" variant="outline">
+                <Share2 />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Share this space?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  You can share this space with others by copying the link
+                  below. You can only share public spaces.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleCopySpace}>
+                  Copy Link
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <Link href={`/dashboard/spaces/edit/${space.id}`}>
-            <Button variant="outline" className="mt-4 md:mt-0">
-              Edit Space
-            </Button>
+            <Button variant="outline">Edit Space</Button>
           </Link>
         </div>
       </div>

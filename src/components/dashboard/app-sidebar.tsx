@@ -69,7 +69,7 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard" onClick={() => setOpenMobile(false)}>
+              <Link href="/" onClick={() => setOpenMobile(false)}>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Link2 className="size-4" />
                 </div>

@@ -4,6 +4,7 @@ import { Space } from "@/generated/prisma";
 import db from "@/lib/db";
 import { CreateSpaceWithBlocks, PinnedSpace, SpaceWithBlocks } from "@/types";
 import { auth, currentUser, User } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function getUser(): Promise<User | null> {
@@ -335,4 +336,35 @@ export async function unpinSpace(
     console.error(error);
     return { success: false };
   }
+}
+
+export async function saveUserId() {
+  const cookieStore = await cookies();
+  const user = await getUser();
+  if (!user) {
+    return null;
+  }
+
+  try {
+    const res = await db.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true },
+    });
+
+    if (res) {
+      cookieStore.set("userId", res.id, { secure: true });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getUserId(): Promise<string | undefined> {
+  const cookieStore = await cookies();
+  const id = cookieStore.get("userId")?.value;
+  return id;
+}
+
+export async function deleteUserId() {
+  (await cookies()).delete("userId");
 }

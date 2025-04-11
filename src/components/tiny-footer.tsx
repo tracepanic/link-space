@@ -10,7 +10,7 @@ export function TinyFooter() {
           className="flex items-center gap-1.5 hover:text-foreground transition-colors"
         >
           <Home className="h-3.5 w-3.5" />
-          <span>Home</span>
+          <span>LinkSpace</span>
         </Link>
         <div className="h-4 border-r border-border" />
         <Link
