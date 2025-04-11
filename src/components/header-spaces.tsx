@@ -24,7 +24,7 @@ export function HeaderNavigation({ spaces }: HeaderNavigationProps) {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="container mx-auto flex h-14 items-center justify-between">
         <div className="flex items-center">
-          <nav className="hidden md:flex items-center ml-6 space-x-1">
+          <nav className="flex items-center ml-6 space-x-1">
             <Link
               href={`/u/${id}`}
               className={cn(
