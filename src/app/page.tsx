@@ -42,7 +42,7 @@ export default function Page() {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                <Link href={`/u/`}>
+                <Link href={`/u/cm9cpxy3w0004wv0uvlhfsd2f`}>
                   <Button size="lg" className="h-12 px-8">
                     View Demo Profile
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -110,7 +110,7 @@ export default function Page() {
                 </p>
                 <div className="mt-auto">
                   <Link
-                    href={`/u/`}
+                    href={`/u/cm9cpxy3w0004wv0uvlhfsd2f`}
                     className="inline-flex items-center text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     View demo profile <ChevronRight className="ml-1 h-4 w-4" />
@@ -129,7 +129,7 @@ export default function Page() {
                 </p>
                 <div className="mt-auto">
                   <Link
-                    href={`/u/`}
+                    href={`/u/cm9cpxy3w0004wv0uvlhfsd2f`}
                     className="inline-flex items-center text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     See home space <ChevronRight className="ml-1 h-4 w-4" />
@@ -150,7 +150,7 @@ export default function Page() {
                 </p>
                 <div className="mt-auto">
                   <Link
-                    href="/create"
+                    href="/u/cm9cpxy3w0004wv0uvlhfsd2f"
                     className="inline-flex items-center text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     Try it out <ChevronRight className="ml-1 h-4 w-4" />
@@ -169,7 +169,7 @@ export default function Page() {
                 </p>
                 <div className="mt-auto">
                   <Link
-                    href={`/u/`}
+                    href={`/u/cm9cpxy3w0004wv0uvlhfsd2f`}
                     className="inline-flex items-center text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     View gallery <ChevronRight className="ml-1 h-4 w-4" />
@@ -190,7 +190,7 @@ export default function Page() {
                 </p>
                 <div className="mt-auto">
                   <Link
-                    href="/create"
+                    href="/dashboard/new"
                     className="inline-flex items-center text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     Start creating <ChevronRight className="ml-1 h-4 w-4" />
@@ -211,7 +211,7 @@ export default function Page() {
                 </p>
                 <div className="mt-auto">
                   <Link
-                    href="/dashboard"
+                    href="/dashboard/spaces"
                     className="inline-flex items-center text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     Manage spaces <ChevronRight className="ml-1 h-4 w-4" />
@@ -309,13 +309,13 @@ export default function Page() {
                   digital spaces today. It&apos;s free and easy to get started.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                  <Link href="/dashboard">
+                  <Link href="/dashboard/new">
                     <Button size="lg" className="h-12 px-8">
                       Create Your First Space
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
-                  <Link href={`/u/`}>
+                  <Link href={`/u/cm9cpxy3w0004wv0uvlhfsd2f`}>
                     <Button size="lg" variant="secondary" className="h-12 px-8">
                       View Demo Profile
                     </Button>
