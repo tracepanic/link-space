@@ -2,6 +2,7 @@
 
 import { BlockRenderer } from "@/components/blocks/block-renderer";
 import { HeaderNavigation } from "@/components/header-spaces";
+import { TinyFooter } from "@/components/tiny-footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useSpaceStore } from "@/lib/store";
@@ -19,29 +20,31 @@ export default function Page() {
 
   if (!space) {
     return (
-      <Card className="max-w-3xl px-4 mx-auto">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-destructive mb-4">
-            Space Not Found
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            The space you are looking for does not exist, has been removed or is
-            private.
-          </p>
-          <Link href="/">
-            <Button variant="outline" className="mt-4">
-              Go To Home Page
-            </Button>
-          </Link>
-        </div>
-      </Card>
+      <div className="px-4">
+        <Card className="max-w-3xl px-4 mx-auto">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-destructive mb-4">
+              Space Not Found
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              The space you are looking for does not exist, has been removed or
+              is private.
+            </p>
+            <Link href="/">
+              <Button variant="outline" className="mt-4">
+                Go To Home Page
+              </Button>
+            </Link>
+          </div>
+        </Card>
+      </div>
     );
   }
 
   return (
     <div>
       <HeaderNavigation spaces={spaces} />
-      <div className="max-w-3xl py-10 px-4 mx-auto">
+      <div className="max-w-3xl py-10 px-4 mx-auto min-h-screen">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">{space.title}</h1>
           <p className="text-muted-foreground mt-1">{space.description}</p>
@@ -58,6 +61,8 @@ export default function Page() {
           <BlockRenderer blocks={space.block} />
         )}
       </div>
+
+      <TinyFooter />
     </div>
   );
 }
