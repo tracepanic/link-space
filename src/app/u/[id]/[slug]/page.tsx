@@ -19,7 +19,7 @@ export default function Page() {
 
   if (!space) {
     return (
-      <Card>
+      <Card className="max-w-3xl px-4 mx-auto">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-destructive mb-4">
             Space Not Found
