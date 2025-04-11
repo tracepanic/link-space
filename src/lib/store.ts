@@ -1,3 +1,5 @@
+import { Space } from "@/generated/prisma";
+import { SpaceWithBlocks } from "@/types";
 import { create } from "zustand";
 
 interface Pin {
@@ -5,7 +7,7 @@ interface Pin {
   title: string;
 }
 
-interface PinState {
+interface PinStore {
   pins: Pin[];
   setAllPins: (newPins: Pin[]) => void;
   addPin: (pin: Pin) => void;
@@ -15,7 +17,16 @@ interface PinState {
   updatePinTitle: (id: string, newTitle: string) => void;
 }
 
-const usePinStore = create<PinState>((set, get) => ({
+interface SpaceStore {
+  spaces: SpaceWithBlocks[];
+  setSpaces: (spaces: SpaceWithBlocks[]) => void;
+  getHomeSpace: () => SpaceWithBlocks | undefined;
+  getSpaceById: (id: string) => SpaceWithBlocks | undefined;
+  getSpaceBySlug: (slug: string) => SpaceWithBlocks | undefined;
+  getAllSpaces: () => Space[];
+}
+
+const usePinStore = create<PinStore>((set, get) => ({
   pins: [],
 
   setAllPins: (newPins: Pin[]) => set({ pins: newPins }),
@@ -45,4 +56,28 @@ const usePinStore = create<PinState>((set, get) => ({
     })),
 }));
 
-export { usePinStore };
+const useSpaceStore = create<SpaceStore>((set, get) => ({
+  spaces: [],
+
+  setSpaces: (spaces) => set({ spaces }),
+
+  getHomeSpace: () => {
+    return get().spaces.find((s) => s.isHome);
+  },
+
+  getSpaceById: (id) => {
+    return get().spaces.find((s) => s.id === id);
+  },
+
+  getSpaceBySlug: (slug) => {
+    return get().spaces.find((s) => s.slug === slug);
+  },
+
+  getAllSpaces: () => {
+    return get().spaces.map(
+      ({ block, ...spaceWithoutBlocks }) => spaceWithoutBlocks,
+    );
+  },
+}));
+
+export { usePinStore, useSpaceStore };

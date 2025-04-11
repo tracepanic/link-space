@@ -152,6 +152,25 @@ export async function getPrivateUserSpace(
   }
 }
 
+export async function getAllPublicSpacesWithBlock(
+  id: string,
+): Promise<SpaceWithBlocks[] | []> {
+  try {
+    const res = await db.space.findMany({
+      where: {
+        user: { id },
+        visibility: "PUBLIC",
+      },
+      include: { block: true },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
 export async function deleteSpace(id: string): Promise<{ success: boolean }> {
   const user = await getUser();
   if (!user) {
