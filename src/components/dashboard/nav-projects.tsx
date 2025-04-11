@@ -39,7 +39,7 @@ export function NavProjects() {
       setAllPins(simplifiedPins);
       setLoading(false);
     })();
-  }, []);
+  }, [setAllPins]);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">

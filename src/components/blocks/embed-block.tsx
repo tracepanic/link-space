@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { EmbedBlockContent } from "@/types";
 
 function EmbedBlock({ content }: { content: EmbedBlockContent }) {

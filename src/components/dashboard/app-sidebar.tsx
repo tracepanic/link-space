@@ -15,25 +15,15 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { SidebarUser } from "@/types";
-import {
-  File,
-  FilePlus,
-  Frame,
-  House,
-  LifeBuoy,
-  Link2,
-  Map,
-  PieChart,
-  Send,
-} from "lucide-react";
+import { File, FilePlus, LifeBuoy, Link2, Send } from "lucide-react";
 import Link from "next/link";
 
 const mainNavs = [
-  {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: House,
-  },
+  // {
+  //   title: "Dashboard",
+  //   url: "/dashboard",
+  //   icon: House,
+  // },
   {
     title: "New Space",
     url: "/dashboard/new",
@@ -57,37 +47,18 @@ const mainNavs = [
   },
 ];
 
-const data = {
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: LifeBuoy,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: Send,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-};
+const secondaryNavs = [
+  {
+    title: "Support",
+    url: "https://forms.gle/FPQueA9G2jEJqcMh7",
+    icon: LifeBuoy,
+  },
+  {
+    title: "Feedback",
+    url: "https://forms.gle/oLatLpWetnfJ5zMDA",
+    icon: Send,
+  },
+];
 
 export function AppSidebar({ user }: { user: SidebarUser }) {
   const { setOpenMobile } = useSidebar();
@@ -114,7 +85,7 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
       <SidebarContent>
         <NavMain items={mainNavs} />
         <NavProjects />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavSecondary items={secondaryNavs} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

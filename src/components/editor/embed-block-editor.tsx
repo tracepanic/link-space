@@ -10,6 +10,7 @@ import { EmbedBlockContent } from "@/types";
 import { useEffect, useState } from "react";
 
 interface EmbedBlockEditorProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: any;
   onChange: (content: EmbedBlockContent) => void;
 }

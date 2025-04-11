@@ -1,25 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { Space } from "@/generated/prisma";
+import { cn } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { ChevronDown, Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import { Space } from "@/generated/prisma";
 
 interface HeaderNavigationProps {
   spaces: Space[];
-  currentSpace?: Space;
 }
 
-export function HeaderNavigation({
-  spaces,
-  currentSpace,
-}: HeaderNavigationProps) {
+export function HeaderNavigation({ spaces }: HeaderNavigationProps) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
 
   const params = useParams();
   const id = params.id as string;
@@ -80,56 +72,6 @@ export function HeaderNavigation({
             )}
           </nav>
         </div>
-
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[80%] sm:w-[350px]">
-            <div className="flex flex-col h-full">
-              <div className="flex flex-col py-4 space-y-1">
-                <Link
-                  href={`/u/${id}`}
-                  className={cn(
-                    "px-4 py-2 rounded-md transition-colors",
-                    pathname === `/u/${id}`
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "hover:bg-muted",
-                  )}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Home
-                </Link>
-
-                {otherSpaces.length > 0 && (
-                  <>
-                    <div className="px-4 py-2 text-sm font-medium text-muted-foreground">
-                      Spaces
-                    </div>
-                    {otherSpaces.map((space) => (
-                      <Link
-                        key={space.id}
-                        href={`/u/${id}/${space.slug}`}
-                        className={cn(
-                          "px-4 py-2 pl-6 rounded-md transition-colors",
-                          pathname === `/u/${id}/${space.slug}`
-                            ? "bg-primary/10 text-primary font-medium"
-                            : "hover:bg-muted",
-                        )}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {space.title}
-                      </Link>
-                    ))}
-                  </>
-                )}
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
       </div>
     </header>
   );

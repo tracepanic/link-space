@@ -29,6 +29,7 @@ export async function createSpaceWithBlocks(
   try {
     return await db.$transaction(
       async (tx) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const spaceData: any = {
           title: data.title,
           slug: data.slug,
@@ -209,6 +210,7 @@ export async function updateSpaceWithBlocks(
           where: { spaceId: id },
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const spaceUpdateData: any = {
           title: data.title,
           slug: data.slug,

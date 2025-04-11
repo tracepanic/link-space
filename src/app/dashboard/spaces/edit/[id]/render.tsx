@@ -1,6 +1,5 @@
 "use client";
 
-import { BlockRenderer } from "@/components/blocks/block-renderer";
 import { AddBlockMenu } from "@/components/editor/add-block-menu";
 import { BlockEditor } from "@/components/editor/block-editor";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,7 @@ import { getPrivateUserSpace, updateSpaceWithBlocks } from "@/lib/server";
 import { usePinStore } from "@/lib/store";
 import { SpaceWithBlocks } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, FilePlus, Lock } from "lucide-react";
+import { FilePlus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -65,6 +64,7 @@ const schema = z.object({
 export default function Render({ id }: { id: string }) {
   const [loading, setLoading] = useState(true);
   const [space, setSpace] = useState<SpaceWithBlocks | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [blocks, setBlocks] = useState<any[]>([]);
 
   const router = useRouter();
@@ -124,6 +124,7 @@ export default function Render({ id }: { id: string }) {
     setBlocks([...blocks, newBlock]);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleBlocksChange = (updatedBlocks: any[]) => {
     setBlocks(updatedBlocks);
   };
@@ -220,7 +221,9 @@ export default function Render({ id }: { id: string }) {
                         />
                       </div>
                     </FormControl>
-                    <FormDescription>Update your space's URL</FormDescription>
+                    <FormDescription>
+                      Update your space&apos;s URL
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -325,11 +328,7 @@ export default function Render({ id }: { id: string }) {
             <h2 className="text-xl font-semibold mb-4">Content</h2>
 
             {blocks.length > 0 ? (
-              <BlockEditor
-                blocks={blocks}
-                onChange={handleBlocksChange}
-                onAddBlock={handleAddBlock}
-              />
+              <BlockEditor blocks={blocks} onChange={handleBlocksChange} />
             ) : (
               <div className="flex flex-col items-center justify-center py-12 border rounded-lg border-dashed text-center">
                 <p className="text-muted-foreground mb-4">

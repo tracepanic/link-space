@@ -48,7 +48,7 @@ export default function Page() {
 
   return (
     <div>
-      <HeaderNavigation spaces={spaces} currentSpace={space} />
+      <HeaderNavigation spaces={spaces} />
       <div className="max-w-3xl py-10 px-4 mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">{space.title}</h1>
@@ -67,7 +67,7 @@ export default function Page() {
         )}
 
         {spaces.filter((s) => !s.isHome).length > 0 && (
-          <div className="mt-16">
+          <div className="mt-52">
             <h2 className="text-2xl font-bold mb-6">All Spaces</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {spaces

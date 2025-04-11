@@ -47,5 +47,6 @@ export type CreateSpaceWithBlocks = {
   visibility: Visibility;
   isHome?: boolean;
   isInHeader?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   blocks: { id: string; type: BlockType; order: number; content: any }[];
 };

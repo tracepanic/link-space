@@ -5,6 +5,7 @@ import { TextBlockContent } from "@/types";
 import ReactMarkdown from "react-markdown";
 
 interface TextBlockEditorProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: any;
   onChange: (content: TextBlockContent) => void;
 }

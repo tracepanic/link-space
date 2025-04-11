@@ -4,7 +4,6 @@ import { EmbedBlockEditor } from "@/components/editor/embed-block-editor";
 import { LinkBlockEditor } from "@/components/editor/link-block-editor";
 import { TextBlockEditor } from "@/components/editor/text-block-editor";
 import { Button } from "@/components/ui/button";
-import { BlockType } from "@/generated/prisma";
 import { ActualBlock } from "@/types";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { ArrowDown, ArrowUp, GripVertical, Trash2 } from "lucide-react";
@@ -12,10 +11,10 @@ import { ArrowDown, ArrowUp, GripVertical, Trash2 } from "lucide-react";
 interface BlockEditorProps {
   blocks: ActualBlock[];
   onChange: (blocks: ActualBlock[]) => void;
-  onAddBlock: (type: BlockType) => void;
 }
 
-function BlockEditor({ blocks, onChange, onAddBlock }: BlockEditorProps) {
+function BlockEditor({ blocks, onChange }: BlockEditorProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
 
@@ -75,6 +74,7 @@ function BlockEditor({ blocks, onChange, onAddBlock }: BlockEditorProps) {
     onChange(updatedBlocks);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateBlockContent = (index: number, content: any) => {
     const items = [...blocks];
     items[index] = {

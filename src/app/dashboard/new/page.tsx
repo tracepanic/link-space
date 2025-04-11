@@ -58,6 +58,7 @@ const schema = z.object({
 });
 
 export default function Page() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [blocks, setBlocks] = useState<any[]>([]);
 
   const router = useRouter();
@@ -91,6 +92,7 @@ export default function Page() {
     setBlocks([...blocks, newBlock]);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleBlocksChange = (updatedBlocks: any[]) => {
     setBlocks(updatedBlocks);
   };
@@ -165,7 +167,7 @@ export default function Page() {
                       </div>
                     </FormControl>
                     <FormDescription>
-                      This determines your space's URL
+                      This determines your space&apos;s URL
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -271,11 +273,7 @@ export default function Page() {
             <h2 className="text-xl font-semibold mb-4">Content</h2>
 
             {blocks.length > 0 ? (
-              <BlockEditor
-                blocks={blocks}
-                onChange={handleBlocksChange}
-                onAddBlock={handleAddBlock}
-              />
+              <BlockEditor blocks={blocks} onChange={handleBlocksChange} />
             ) : (
               <div className="flex flex-col items-center justify-center py-12 border rounded-lg border-dashed text-center">
                 <p className="text-muted-foreground mb-4">

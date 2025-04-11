@@ -56,7 +56,7 @@ function LinkBlock({ content }: { content: LinkBlockContent }) {
       } else {
         setLinkType("WEBSITE");
       }
-    } catch (e) {
+    } catch {
       setLinkType("WEBSITE");
     }
   }, [url]);

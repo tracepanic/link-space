@@ -9,6 +9,7 @@ import { LinkBlockContent } from "@/types";
 import { useEffect, useState } from "react";
 
 interface LinkBlockEditorProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: any;
   onChange: (content: LinkBlockContent) => void;
 }

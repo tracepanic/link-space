@@ -3,15 +3,7 @@
 import { BlockRenderer } from "@/components/blocks/block-renderer";
 import { HeaderNavigation } from "@/components/header-spaces";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { formatDistanceToNow } from "@/lib/client";
+import { Card } from "@/components/ui/card";
 import { useSpaceStore } from "@/lib/store";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -48,7 +40,7 @@ export default function Page() {
 
   return (
     <div>
-      <HeaderNavigation spaces={spaces} currentSpace={space} />
+      <HeaderNavigation spaces={spaces} />
       <div className="max-w-3xl py-10 px-4 mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">{space.title}</h1>

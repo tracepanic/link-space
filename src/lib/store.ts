@@ -74,9 +74,7 @@ const useSpaceStore = create<SpaceStore>((set, get) => ({
   },
 
   getAllSpaces: () => {
-    return get().spaces.map(
-      ({ block, ...spaceWithoutBlocks }) => spaceWithoutBlocks,
-    );
+    return get().spaces.map(({ ...spaceWithoutBlocks }) => spaceWithoutBlocks);
   },
 }));
 
