@@ -1,5 +1,5 @@
+import { PrismaClient as PrismaClientDev } from "@/generated/prisma";
 import { PrismaClient as PrismaClientEdge } from "@/generated/prisma/edge";
-import { PrismaClient as PrismaClientDev } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
 
 let db: PrismaClientDev;
