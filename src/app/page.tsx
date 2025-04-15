@@ -2,7 +2,6 @@ import { Header } from "@/components/header";
 import { HowItWorks } from "@/components/home-how-it-works";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getUserId } from "@/lib/server";
 import {
   ArrowRight,
   ChevronRight,
@@ -16,12 +15,10 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Page() {
-  const id = await getUserId();
-
+export default function Page() {
   return (
     <div className="w-full">
-      <Header id={id} />
+      <Header />
 
       <div className="flex flex-col min-h-screen">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-950 overflow-hidden relative">

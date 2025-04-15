@@ -79,13 +79,13 @@ export default function Render({
     }
   };
 
-  const handleCopySpace = () => {
+  const handleCopySpace = (slug: string) => {
     let url: string;
 
     if (space?.isHome) {
       url = `${window.location.origin}/u/${userId}`;
     } else {
-      url = `${window.location.origin}/u/${userId}/${id}`;
+      url = `${window.location.origin}/u/${userId}/${slug}`;
     }
 
     navigator.clipboard.writeText(url);
@@ -153,7 +153,7 @@ export default function Render({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleCopySpace}>
+                <AlertDialogAction onClick={() => handleCopySpace(space.slug)}>
                   Copy Link
                 </AlertDialogAction>
               </AlertDialogFooter>
