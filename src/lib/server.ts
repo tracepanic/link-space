@@ -2,7 +2,12 @@
 
 import { Space } from "@/generated/prisma";
 import db from "@/lib/db";
-import { CreateSpaceWithBlocks, PinnedSpace, SpaceWithBlocks } from "@/types";
+import {
+  CreateSpaceWithBlocks,
+  PinnedSpace,
+  SearchResult,
+  SpaceWithBlocks,
+} from "@/types";
 import { auth, currentUser, User } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -367,4 +372,32 @@ export async function getUserId(): Promise<string | undefined> {
 
 export async function deleteUserId() {
   (await cookies()).delete("userId");
+}
+
+export async function searchSpaces(
+  query: string,
+): Promise<SearchResult[] | []> {
+  if (!query || query.trim() === "") {
+    return [];
+  }
+
+  try {
+    const searchQuery = query.trim().toLowerCase();
+
+    const spaces = db.space.findMany({
+      where: {
+        visibility: "PUBLIC",
+        OR: [
+          { title: { contains: searchQuery, mode: "insensitive" } },
+          { description: { contains: searchQuery, mode: "insensitive" } },
+          { slug: { contains: searchQuery, mode: "insensitive" } },
+        ],
+      },
+    });
+
+    return spaces;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
