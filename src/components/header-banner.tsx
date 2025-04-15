@@ -57,8 +57,7 @@ export function HeaderBanner({ className }: HeaderBannerProps) {
         <div className="flex items-center gap-1 sm:gap-2">
           <Bell className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
           <span className="text-xs sm:text-sm line-clamp-2 sm:line-clamp-1">
-            <span className="font-medium">New:</span> Comments & Feedback now
-            available!
+            <span className="font-medium">New:</span> Global search for spaces now available!
           </span>
         </div>
 

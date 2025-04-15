@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Link2, Menu, Moon, Sun } from "lucide-react";
+import { Link2, Menu, Moon, SearchIcon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -46,6 +46,15 @@ export function Header() {
             </nav>
           </div>
           <div className="flex items-center space-x-1 md:space-x-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              asChild
+            >
+              <Link href="/search">
+                <SearchIcon className="h-5 w-5" />
+              </Link>
+            </Button>
             {mounted && (
               <Button
                 variant="ghost"

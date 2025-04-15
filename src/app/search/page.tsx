@@ -15,7 +15,7 @@ import { Loader } from "@/components/ui/loader";
 import { formatDistanceToNow } from "@/lib/client";
 import { searchSpaces } from "@/lib/server";
 import { SearchResult } from "@/types";
-import { Loader2, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -93,11 +93,11 @@ export default function Page() {
               <div className="flex flex-col items-center justify-center py-5">
                 <Loader />
                 <p className="text-muted-foreground mt-2">
-                  Searching for "{query}"...
+                  Searching for &quot;{query}&quot;...
                 </p>
               </div>
             ) : results.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {results.map((space) => (
                   <Card
                     key={space.id}
@@ -115,7 +115,7 @@ export default function Page() {
                       <div className="flex justify-between items-center">
                         <p className="truncate">/{space.slug}</p>
                         <p>
-                          Updated at{" "}
+                          Updated{" "}
                           {formatDistanceToNow(new Date(space.updatedAt))}
                         </p>
                       </div>
@@ -142,13 +142,23 @@ export default function Page() {
                 <SearchIcon className="h-12 w-12 text-muted-foreground mb-4" />
                 <h2 className="text-xl font-medium">No results found</h2>
                 <p className="text-muted-foreground mt-1">
-                  We couldn't find any matches for "{query}". Try adjusting your
+                  We couldn&apos;t find any matches for &quot;{query}&quot;. Try adjusting your
                   search or filters.
                 </p>
               </div>
             )}
           </div>
-        ) : null}
+        ) : (
+          <div className="flex flex-col items-center justify-center px-4 mt-8 py-8 border rounded-lg border-dashed">
+            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+              <SearchIcon className="h-8 w-8 text-primary" />
+            </div>
+            <h2 className="text-xl text-center font-medium">Search for spaces and content</h2>
+            <p className="text-muted-foreground mt-1 text-center max-w-md">
+              Enter a search term above to find public spaces LinkSpace.
+            </p>
+        </div>
+        )}
       </div>
     </>
   );
