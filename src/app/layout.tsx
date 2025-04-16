@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
 
   // Canonical URL and base URL for metadata
-  metadataBase: new URL("https://tracepanic.com"),
+  metadataBase: new URL("https://spaces.tracepanic.com"),
   alternates: {
     canonical: "/",
     languages: {
