@@ -1,8 +1,8 @@
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import db from "@/lib/db";
 import { getUser, updateUserSettings } from "@/lib/server";
 import { useEffect, useState } from "react";
@@ -88,20 +88,20 @@ export default function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="branding-toggle"
+              checked={showBranding}
+              onCheckedChange={handleBrandingToggle}
+            />
             <div className="space-y-0.5">
-              <Label htmlFor="branding-toggle" className="text-base">
+              <Label htmlFor="branding-toggle" className="text-base cursor-pointer">
                 Show &quot;Powered by LinkSpace&quot; badge
               </Label>
               <p className="text-sm text-muted-foreground">
                 Display a small badge in your profile footer
               </p>
             </div>
-            <Switch
-              id="branding-toggle"
-              checked={showBranding}
-              onCheckedChange={handleBrandingToggle}
-            />
           </div>
         </CardContent>
       </Card>
