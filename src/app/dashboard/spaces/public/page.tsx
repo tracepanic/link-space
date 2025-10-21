@@ -11,12 +11,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/ui/loader";
+import { Badge } from "@/components/ui/badge";
 import { Space } from "@/generated/prisma";
 import { formatDistanceToNow } from "@/lib/client";
 import { deleteSpace, getAllPublicSpaces } from "@/lib/server";
 import { usePinStore } from "@/lib/store";
 import { formatViewCount } from "@/lib/utils";
-import { Edit, Eye, Globe, Plus, Search, Trash2 } from "lucide-react";
+import { Edit, Globe, Plus, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -143,8 +144,7 @@ export default function Page() {
                     {`Updated ${formatDistanceToNow(new Date(space.updatedAt))}`}
                   </p>
                   <div className="flex items-center gap-1">
-                    <Eye className="h-3 w-3" />
-                    <span>{formatViewCount(space.viewCount)}</span>
+                    <Badge>{formatViewCount(space.viewCount)}</Badge>
                   </div>
                 </div>
               </CardContent>
