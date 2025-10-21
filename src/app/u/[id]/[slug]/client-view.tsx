@@ -2,6 +2,7 @@
 
 import { BlockRenderer } from "@/components/blocks/block-renderer";
 import { HeaderNavigation } from "@/components/header-spaces";
+import SocialShare from "@/components/social-share";
 import StructuredData from "@/components/structured-data";
 import { TinyFooter } from "@/components/tiny-footer";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import { useEffect } from "react";
 
 interface ClientViewProps {
   userId: string;
+  slug: string;
   space: SpaceWithBlocks | null;
   allSpaces: SpaceWithBlocks[];
   showBranding: boolean;
@@ -20,6 +22,7 @@ interface ClientViewProps {
 
 export default function ClientView({
   userId,
+  slug,
   space,
   allSpaces,
   showBranding,
@@ -54,10 +57,25 @@ export default function ClientView({
     );
   }
 
+  const spaceUrl = `https://spaces.tracepanic.com/u/${userId}/${slug}`;
+
   return (
     <div>
       <StructuredData space={space} userId={userId} />
       <HeaderNavigation spaces={allSpaces} />
+      
+      {/* Top-right share button */}
+      <div className="max-w-3xl px-4 mx-auto pt-4">
+        <div className="flex justify-end">
+          <SocialShare
+            url={spaceUrl}
+            title={space.title}
+            description={space.description || undefined}
+            variant="dropdown"
+          />
+        </div>
+      </div>
+
       <div className="max-w-3xl py-10 px-4 mx-auto min-h-screen">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">{space.title}</h1>
@@ -74,6 +92,17 @@ export default function ClientView({
         ) : (
           <BlockRenderer blocks={space.block} />
         )}
+
+        {/* Bottom horizontal share buttons */}
+        <div className="mt-24 mb-12">
+          <h2 className="text-xl font-semibold mb-4">Share this space</h2>
+          <SocialShare
+            url={spaceUrl}
+            title={space.title}
+            description={space.description || undefined}
+            variant="horizontal"
+          />
+        </div>
       </div>
 
       <TinyFooter showBranding={showBranding} />
