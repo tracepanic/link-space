@@ -15,7 +15,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { SidebarUser } from "@/types";
-import { File, FilePlus, LifeBuoy, Link2, Send } from "lucide-react";
+import { File, FilePlus, LifeBuoy, Link2, Send, Settings } from "lucide-react";
 import Link from "next/link";
 
 const mainNavs = [
@@ -44,6 +44,11 @@ const mainNavs = [
         url: "/dashboard/spaces/private",
       },
     ],
+  },
+  {
+    title: "Settings",
+    url: "/dashboard/settings",
+    icon: Settings,
   },
 ];
 

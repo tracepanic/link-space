@@ -1,9 +1,26 @@
 import Link from "next/link";
-import { Home, LayoutDashboard } from "lucide-react";
+import { Home, LayoutDashboard, Sparkles } from "lucide-react";
 
-export function TinyFooter() {
+interface TinyFooterProps {
+  showBranding?: boolean;
+}
+
+export function TinyFooter({ showBranding }: TinyFooterProps = { showBranding: true }) {
   return (
     <footer className="w-full py-3 border-t mt-36">
+      {/* Branding badge */}
+      {showBranding !== false && (
+        <div className="text-center mb-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Powered by LinkSpace</span>
+          </Link>
+        </div>
+      )}
+
       <div className="container mx-auto flex justify-center items-center gap-6 text-sm text-muted-foreground">
         <Link
           href="/"
@@ -27,6 +44,18 @@ export function TinyFooter() {
           &copy; {new Date().getFullYear()} LinkSpace. All rights reserved.
         </p>
         <div className="flex space-x-6">
+          <Link
+            href="/discover"
+            className="text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400"
+          >
+            Discover
+          </Link>
+          <Link
+            href="/trending"
+            className="text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400"
+          >
+            Trending
+          </Link>
           <Link
             href="#"
             className="text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400"

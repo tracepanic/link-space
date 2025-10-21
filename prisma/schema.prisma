@@ -22,6 +22,7 @@ enum BlockType {
 model User {
   id      String @id @default(cuid())
   clerkId String @unique
+  showBranding Boolean @default(true)
 
   spaces Space[]
   pinned PinnedSpace[]
@@ -41,6 +42,7 @@ model Space {
   visibility  Visibility @default(PUBLIC)
   isHome      Boolean?
   isInHeader  Boolean?
+  viewCount   Int        @default(0)
 
   block  Block[]
   pinned PinnedSpace[]
