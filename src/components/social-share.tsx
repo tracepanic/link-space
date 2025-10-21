@@ -14,14 +14,12 @@ import { toast } from "sonner";
 interface SocialShareProps {
   url: string;
   title: string;
-  description?: string;
   variant: "dropdown" | "horizontal";
 }
 
 export default function SocialShare({
   url,
   title,
-  description,
   variant,
 }: SocialShareProps) {
   const shareUrls = {
