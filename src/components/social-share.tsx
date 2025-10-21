@@ -8,13 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link as LinkIcon, Share2 } from "lucide-react";
-import {
-  FaFacebook,
-  FaLinkedin,
-  FaWhatsapp,
-  FaXTwitter,
-} from "react-icons/fa6";
+import { Share2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface SocialShareProps {
@@ -61,24 +55,19 @@ export default function SocialShare({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => handleShare("facebook")}>
-            <FaFacebook className="mr-2 h-4 w-4" />
             Share on Facebook
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleShare("twitter")}>
-            <FaXTwitter className="mr-2 h-4 w-4" />
             Share on X
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleShare("linkedin")}>
-            <FaLinkedin className="mr-2 h-4 w-4" />
             Share on LinkedIn
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleShare("whatsapp")}>
-            <FaWhatsapp className="mr-2 h-4 w-4" />
             Share on WhatsApp
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleCopyLink}>
-            <LinkIcon className="mr-2 h-4 w-4" />
             Copy link
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -95,7 +84,6 @@ export default function SocialShare({
         onClick={() => handleShare("facebook")}
         className="w-full sm:w-auto"
       >
-        <FaFacebook className="mr-2 h-4 w-4" />
         Facebook
       </Button>
       <Button
@@ -104,7 +92,6 @@ export default function SocialShare({
         onClick={() => handleShare("twitter")}
         className="w-full sm:w-auto"
       >
-        <FaXTwitter className="mr-2 h-4 w-4" />
         X
       </Button>
       <Button
@@ -113,7 +100,6 @@ export default function SocialShare({
         onClick={() => handleShare("linkedin")}
         className="w-full sm:w-auto"
       >
-        <FaLinkedin className="mr-2 h-4 w-4" />
         LinkedIn
       </Button>
       <Button
@@ -122,7 +108,6 @@ export default function SocialShare({
         onClick={() => handleShare("whatsapp")}
         className="w-full sm:w-auto"
       >
-        <FaWhatsapp className="mr-2 h-4 w-4" />
         WhatsApp
       </Button>
       <Button
@@ -131,7 +116,6 @@ export default function SocialShare({
         onClick={handleCopyLink}
         className="w-full sm:w-auto"
       >
-        <LinkIcon className="mr-2 h-4 w-4" />
         Copy Link
       </Button>
     </div>
