@@ -401,3 +401,133 @@ export async function searchSpaces(
     return [];
   }
 }
+
+/**
+ * Increment view count for a public space
+ * No auth required - public tracking
+ */
+export async function incrementSpaceView(
+  spaceId: string,
+): Promise<{ success: boolean }> {
+  try {
+    await db.space.update({
+      where: {
+        id: spaceId,
+        visibility: "PUBLIC",
+      },
+      data: {
+        viewCount: { increment: 1 },
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("View increment error:", error);
+    return { success: false };
+  }
+}
+
+/**
+ * Get random public spaces for discovery page
+ */
+export async function getDiscoverSpaces(
+  limit?: number,
+): Promise<SpaceWithBlocks[]> {
+  try {
+    const spaces = await db.space.findMany({
+      where: {
+        visibility: "PUBLIC",
+        isHome: true,
+      },
+      include: {
+        user: true,
+        block: true,
+      },
+      take: limit || 24,
+      orderBy: { updatedAt: "desc" },
+    });
+
+    return spaces;
+  } catch (error) {
+    console.error("Discover spaces error:", error);
+    return [];
+  }
+}
+
+/**
+ * Get trending spaces (most viewed in last N days)
+ * Note: Current implementation uses total viewCount with updatedAt filter
+ * For true "last N days" trending, would need SpaceView model with timestamps
+ */
+export async function getTrendingSpaces(
+  limit?: number,
+  days?: number,
+): Promise<SpaceWithBlocks[]> {
+  try {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - (days || 7));
+
+    const spaces = await db.space.findMany({
+      where: {
+        visibility: "PUBLIC",
+        isHome: true,
+        updatedAt: { gte: cutoffDate },
+      },
+      include: {
+        user: true,
+        block: true,
+      },
+      orderBy: { viewCount: "desc" },
+      take: limit || 20,
+    });
+
+    return spaces;
+  } catch (error) {
+    console.error("Trending spaces error:", error);
+    return [];
+  }
+}
+
+/**
+ * Update user settings (currently just branding preference)
+ */
+export async function updateUserSettings(settings: {
+  showBranding: boolean;
+}): Promise<{ success: boolean }> {
+  const user = await getUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  try {
+    await db.user.update({
+      where: { clerkId: user.id },
+      data: { showBranding: settings.showBranding },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Update settings error:", error);
+    return { success: false };
+  }
+}
+
+/**
+ * Get user's branding preference
+ * No auth required - needed for public profile pages
+ */
+export async function getUserBrandingSetting(
+  userId: string,
+): Promise<boolean> {
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { showBranding: true },
+    });
+
+    return user?.showBranding ?? true;
+  } catch (error) {
+    console.error("Get branding setting error:", error);
+    return true; // Default to showing branding
+  }
+}
