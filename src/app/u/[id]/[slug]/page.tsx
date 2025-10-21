@@ -1,68 +1,73 @@
-"use client";
+import {
+  getAllPublicSpacesWithBlock,
+  getUserBrandingSetting,
+} from "@/lib/server";
+import { Metadata } from "next";
+import ClientView from "./client-view";
 
-import { BlockRenderer } from "@/components/blocks/block-renderer";
-import { HeaderNavigation } from "@/components/header-spaces";
-import { TinyFooter } from "@/components/tiny-footer";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { useSpaceStore } from "@/lib/store";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+interface PageProps {
+  params: Promise<{ id: string; slug: string }>;
+}
 
-export default function Page() {
-  const { getAllSpaces, getSpaceBySlug } = useSpaceStore();
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { id, slug } = await params;
 
-  const params = useParams();
-  const slug = params.slug as string;
+  try {
+    const spaces = await getAllPublicSpacesWithBlock(id);
+    const space = spaces.find((s) => s.slug === slug);
 
-  const space = getSpaceBySlug(slug);
-  const spaces = getAllSpaces();
+    if (!space) {
+      return {
+        title: "Space Not Found | LinkSpace",
+        description: "This space does not exist or is private.",
+      };
+    }
 
-  if (!space) {
-    return (
-      <div className="px-4">
-        <Card className="max-w-3xl px-4 mx-auto">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-destructive mb-4">
-              Space Not Found
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              The space you are looking for does not exist, has been removed or
-              is private.
-            </p>
-            <Link href="/">
-              <Button variant="outline" className="mt-4">
-                Go To Home Page
-              </Button>
-            </Link>
-          </div>
-        </Card>
-      </div>
-    );
+    const title = `${space.title} | LinkSpace`;
+    const description = space.description || "View this LinkSpace";
+    const ogImageUrl = `/api/og?title=${encodeURIComponent(space.title)}&description=${encodeURIComponent(description)}`;
+    const spaceUrl = `https://spaces.tracepanic.com/u/${id}/${slug}`;
+
+    return {
+      title,
+      description: description.slice(0, 160),
+      openGraph: {
+        title: space.title,
+        description,
+        url: spaceUrl,
+        images: [{ url: ogImageUrl }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: space.title,
+        description,
+        images: [ogImageUrl],
+      },
+    };
+  } catch (error) {
+    console.error("Metadata generation error:", error);
+    return {
+      title: "Space Not Found | LinkSpace",
+      description: "This space does not exist or is private.",
+    };
   }
+}
+
+export default async function Page({ params }: PageProps) {
+  const { id, slug } = await params;
+
+  const spaces = await getAllPublicSpacesWithBlock(id);
+  const space = spaces.find((s) => s.slug === slug) || null;
+  const showBranding = await getUserBrandingSetting(id);
 
   return (
-    <div>
-      <HeaderNavigation spaces={spaces} />
-      <div className="max-w-3xl py-10 px-4 mx-auto min-h-screen">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">{space.title}</h1>
-          <p className="text-muted-foreground mt-1">{space.description}</p>
-        </div>
-
-        {space.block.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 border rounded-lg border-dashed">
-            <h2 className="text-xl font-medium">This space is empty</h2>
-            <p className="text-muted-foreground mt-1">
-              No content has been added yet
-            </p>
-          </div>
-        ) : (
-          <BlockRenderer blocks={space.block} />
-        )}
-      </div>
-
-      <TinyFooter />
-    </div>
+    <ClientView
+      userId={id}
+      space={space}
+      allSpaces={spaces}
+      showBranding={showBranding}
+    />
   );
 }
