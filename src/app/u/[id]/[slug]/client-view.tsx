@@ -70,7 +70,6 @@ export default function ClientView({
           <SocialShare
             url={spaceUrl}
             title={space.title}
-            description={space.description || undefined}
             variant="dropdown"
           />
         </div>
@@ -99,7 +98,6 @@ export default function ClientView({
           <SocialShare
             url={spaceUrl}
             title={space.title}
-            description={space.description || undefined}
             variant="horizontal"
           />
         </div>
