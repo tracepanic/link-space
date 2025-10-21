@@ -7,10 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "@/lib/client";
 import { getTrendingSpaces } from "@/lib/server";
 import { formatViewCount } from "@/lib/utils";
-import { Eye } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
@@ -73,8 +73,7 @@ export default async function TrendingPage() {
                   <CardContent className="flex-1">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1.5 font-medium">
-                        <Eye className="h-3.5 w-3.5" />
-                        <span>{formatViewCount(space.viewCount)}</span>
+                        <Badge>{formatViewCount(space.viewCount)}</Badge>
                       </div>
                       <div>
                         Updated {formatDistanceToNow(new Date(space.updatedAt))}
