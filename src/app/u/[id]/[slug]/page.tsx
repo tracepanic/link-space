@@ -65,6 +65,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <ClientView
       userId={id}
+      slug={slug}
       space={space}
       allSpaces={spaces}
       showBranding={showBranding}
