@@ -28,7 +28,7 @@ export default async function TrendingPage() {
           <CardHeader>
             <CardTitle>No Trending Spaces Yet</CardTitle>
             <CardDescription>
-              Check back soon to see what's trending!
+              Check back soon to see what&apos;s trending!
             </CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
